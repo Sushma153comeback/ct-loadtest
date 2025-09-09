@@ -7,23 +7,20 @@ on:
 
 jobs:
   regression:
-    runs-on: ubuntu-22.04        # pin to 22.04 to avoid apt issues
+    runs-on: ubuntu-latest
+    # ✅ Use the official Playwright image with browsers & deps preinstalled
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.0-jammy
+
     timeout-minutes: 30
     env:
       TARGET_URL: https://churchtalksrm.com
+
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
+      # Node + npm are already in the container, just install deps
       - run: npm ci
-
-      # ✅ New way: install browsers + required Linux deps
-      - name: Install Playwright browsers & system deps
-        run: npx playwright install --with-deps chromium firefox webkit
 
       - name: Run regression tests
         run: npx playwright test -c playwright.regression.config.cjs
