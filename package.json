@@ -1,0 +1,18 @@
+{
+  "name": "ct-loadtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "aggregate": "node scripts/aggregate.js",
+    "test:regression": "npx playwright test -c playwright.regression.config.cjs",
+    "test:regression:smoke": "npx playwright test -c playwright.regression.config.cjs --grep @smoke"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "1.55.0",
+    "@types/node": "24.3.1"
+  }
+}
