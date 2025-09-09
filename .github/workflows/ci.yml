@@ -8,21 +8,19 @@ on:
 jobs:
   regression:
     runs-on: ubuntu-latest
-    # Use official Playwright image (includes browsers & OS deps)
     container:
       image: mcr.microsoft.com/playwright:v1.55.0-jammy
 
     timeout-minutes: 30
     env:
       TARGET_URL: https://churchtalksrm.com
-      # ✅ Tell Playwright to use preinstalled browsers in the container
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+      HOME: /root   # ✅ needed for Firefox inside container
 
     steps:
       - uses: actions/checkout@v4
 
-      # Node & npm are already in the container; just install deps
       - run: npm ci
 
       - name: Verify Playwright in container
