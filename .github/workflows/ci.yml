@@ -8,29 +8,18 @@ on:
 jobs:
   regression:
     runs-on: ubuntu-latest
-
-    # ✅ Use official Playwright image and set HOME for the container process
     container:
       image: mcr.microsoft.com/playwright:v1.55.0-jammy
-      options: --user 0                   # run as root explicitly
-      env:
-        HOME: /root                       # <-- make HOME owned by root
 
     timeout-minutes: 30
     env:
       TARGET_URL: https://churchtalksrm.com
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+      HOME: /root   # ✅ needed for Firefox inside container
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Show container user and HOME
-        run: |
-          whoami
-          id -u
-          echo "HOME=$HOME"
-          ls -ld "$HOME"
 
       - run: npm ci
 
